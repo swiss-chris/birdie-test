@@ -29,12 +29,14 @@
     "jest": "^23.6.0",
     "nodemon": "^1.19.0",
     "prettier": "^1.14.3",
+    "reflect-metadata": "^0.1.13",
     "rimraf": "^2.6.2",
     "supertest": "^4.0.2",
     "ts-jest": "^23.10.3",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
+    "typeorm": "^0.2.18",
     "typescript": "^3.1.1"
   },
   "engines": {
