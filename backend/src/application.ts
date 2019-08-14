@@ -1,8 +1,8 @@
 import * as express from "express";
-import {pingController} from "./controllers/ping";
+import {careRecipientController} from "./controllers/care-recipient-controller";
 
 const app = express();
 
-app.use(pingController);
+app.use(careRecipientController);
 
 export default app;
