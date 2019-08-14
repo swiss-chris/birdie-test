@@ -16,7 +16,7 @@ careRecipientController.get('/recipients', (_, res) => {
 });
 
 
-careRecipientController.get('/recipients/:id', (req, res) => {
+careRecipientController.get('/recipients/:id/mood', (req, res) => {
   const QUERY = `select JSON_EXTRACT(payload, '$.mood') as mood, event_type, timestamp
     from birdietest.events 
     where care_recipient_id = '${req.params.id}'
@@ -26,6 +26,40 @@ careRecipientController.get('/recipients/:id', (req, res) => {
 
   queryDatabase(QUERY, res, mapper);
 });
+
+careRecipientController.get('/recipients/:id', (req, res) => {
+  const QUERY = `select payload, event_type, timestamp
+  from birdietest.events 
+  where care_recipient_id = '${req.params.id}'
+  order by timestamp desc
+  limit 100`;
+  const mapper = (row: any) => {
+    const payload = JSON.parse(row.payload);
+
+    return {...payload, 
+      extra_data: extractExtraData(payload)
+    };
+  };
+
+  queryDatabase(QUERY, res, mapper);
+});
+
+function extractExtraData(payload: any) {
+  const data: {
+    [k: string]: any;
+  } = {};
+  Object.keys(payload).filter(key => ![
+    "id",
+    "event_type",
+    "visit_id",
+    "timestamp",
+    "caregiver_id",
+    "care_recipient_id"
+  ]
+    .includes(key))
+    .forEach(key => data[key] = payload[key]);
+  return data;
+}
 
 function queryDatabase(QUERY: string, res: Response, mapper: any) {
   connection.query(QUERY,
