@@ -7,7 +7,7 @@ import Logo from '@App/components/Logo';
 import SubTitle from '@App/components/SubTitle';
 import Recipient from '@App/components/Recipient';
 
-const LogoUrl = require('../../assets/images/logo-birdie.svg');
+const LogoUrl = require('../assets/images/logo-birdie.svg');
 
 interface AppProps {
 
@@ -62,8 +62,16 @@ class App extends React.Component<AppProps, AppState> {
           <SubTitle>Please click on a care recipient below</SubTitle>
           {
             recipients && recipients.length && recipients.map((recipient, index) => (
-              <Link key={index} to="/timeline/moods">
-                <Recipient>{recipient}</Recipient>
+              <Link
+                key={index}
+                to={{
+                  pathname: '/moods',
+                  state: {
+                    recipient
+                  }
+                }}
+              >
+                <Recipient key={index}>{recipient}</Recipient>
               </Link>
             )
             )
