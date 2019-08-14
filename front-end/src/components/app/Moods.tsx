@@ -1,11 +1,8 @@
 import * as React from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import { Link } from 'react-router-dom'
 
 import Title from '@App/components/Title';
 import Logo from '@App/components/Logo';
-import SubTitle from '@App/components/SubTitle';
-import Recipient from '@App/components/Recipient';
 
 const LogoUrl = require('../../assets/images/logo-birdie.svg');
 
@@ -36,37 +33,33 @@ const AppContainer = styled.div`
   flex-direction: column;
 `;
 
-class App extends React.Component<AppProps, AppState> {
+class Moods extends React.Component<AppProps, AppState> {
 
   // TODO add access qualifiers (private ?)
   state = {
-    recipients: []
+    moods: []
   };
 
   componentDidMount() {
-    fetch('http://localhost:8000/recipients')
+    fetch('http://localhost:8000/recipients/ad3512a6-91b1-4d7d-a005-6f8764dd0111/mood')
       .then(data => data.json())
       .then(data => {
-        this.setState({ recipients: data.result });
+        this.setState({ moods: data.result });
       });
   }
 
   public render() {
-    const { recipients } = this.state;
+    const { moods } = this.state;
     return (
       <>
         <GlobalStyle />
         <AppContainer>
           <Logo src={LogoUrl} />
-          <Title>Care Recipients</Title>
-          <SubTitle>Please click on a care recipient below</SubTitle>
+          <Title>Moods for {"Care Recipient X"}</Title>
           {
-            recipients && recipients.length && recipients.map((recipient, index) => (
-              <Link key={index} to="/timeline/moods">
-                <Recipient>{recipient}</Recipient>
-              </Link>
-            )
-            )
+            moods && moods.length && moods.map((mood: any, index) => (
+              <p key={index}>{mood.mood}</p>
+            ))
           }
         </AppContainer>
       </>
@@ -74,4 +67,4 @@ class App extends React.Component<AppProps, AppState> {
   }
 }
 
-export default App; 
+export default Moods;
